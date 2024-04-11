@@ -1,17 +1,14 @@
-# Welcome to MkDocs
+# Документация API
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+Добро пожаловать в нашу документацию API!
 
-## Commands
+Здесь вы найдете всё необходимое для работы с нашим API, начиная от базовых концепций до детальных инструкций и примеров кода.
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
-
-## Project layout
-
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+* [Обзор](overview.md)
+* [Начало работы](getting-started.md)
+* [Аутентификация и авторизация](auth.md)
+* [Справочник API](swagger-ui/index.html)
+* [Примеры использования API](examples.md)
+* [История изменений](changelog.md)
+* [Контакты](contacts.md)
+* [Глоссарий](glossary.md)
