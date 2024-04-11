@@ -1,0 +1,7 @@
+site_name: My Project Documentation
+site_description: A detailed description of my project
+theme: material
+
+nav:
+  - Home: index.md
+  - About: about.md
