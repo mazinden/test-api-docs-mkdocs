@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Пример API для работы с пользователями
-  description: "API для создания, получения и удаления пользователей."
+  description: "API для создания, получения, обновления и удаления пользователей."
   termsOfService: https://example.com/terms
   contact:
     name: Имя контактного лица
@@ -14,20 +14,20 @@ externalDocs:
   description: Подробная документация по API
   url: https://example.com/docs
 servers:
-- url: http://localhost:8080
-  description: Основной сервер
-- url: http://localhost:8080/test
-  description: Тестовый сервер
+  - url: http://localhost:8080
+    description: Основной сервер
+  - url: http://localhost:8080/test
+    description: Тестовый сервер
 security:
-- api_key: []
+  - api_key: []
 tags:
-- name: users
-  description: Операции с пользователями
+  - name: users
+    description: Операции с пользователями
 paths:
   /users:
     get:
       tags:
-      - users
+        - users
       summary: Получить список всех пользователей
       operationId: usersGET
       responses:
@@ -39,18 +39,9 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/user'
-                x-content-type: application/json
-              example:
-              - id: 1
-                name: Анна
-                email: anna@example.com
-              - id: 2
-                name: Иван
-                email: ivan@example.com
-      x-swagger-router-controller: Users
     post:
       tags:
-      - users
+        - users
       summary: Создать нового пользователя
       operationId: usersPOST
       requestBody:
@@ -58,69 +49,78 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/create_user'
-            example:
-              name: Новый Пользователь
-              email: newuser@example.com
-        required: true
       responses:
         "201":
           description: Пользователь успешно создан
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/user'
-              example:
-                id: 3
-                name: Новый Пользователь
-                email: newuser@example.com
         "400":
           description: Неверный запрос (неполные или некорректные данные)
         "500":
           description: Внутренняя ошибка сервера
-      x-swagger-router-controller: Users
   /users/{id}:
     get:
       tags:
-      - users
-      summary: Get user by id
+        - users
+      summary: Получить информацию о пользователе по ID
       operationId: usersIdGET
       parameters:
-      - name: id
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         "200":
           description: Информация о пользователе успешно получена
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/user'
-              example:
-                id: 1
-                name: Анна
-                email: anna@example.com
         "404":
           description: Пользователь не найден
         "500":
           description: Внутренняя ошибка сервера
-      x-swagger-router-controller: Users
+    put:
+      tags:
+        - users
+      summary: Обновить данные пользователя
+      operationId: usersIdPUT
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/create_user'
+            example:
+              username: "UpdatedUser"
+              email: "updated@example.com"
+              firstName: "Обновленное"
+              lastName: "Имя"
+              city: "Обновленный Город"
+              age: 32
+      responses:
+        "200":
+          description: Данные пользователя успешно обновлены
+        "400":
+          description: Неверный запрос (неполные или некорректные данные)
+        "404":
+          description: Пользователь не найден
+        "409":
+          description: Конфликт при обновлении данных пользователя
+        "500":
+          description: Внутренняя ошибка сервера
     delete:
       tags:
-      - users
+        - users
       summary: Удалить пользователя
       operationId: usersIdDELETE
       parameters:
-      - name: id
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         "204":
           description: Пользователь успешно удален
@@ -128,37 +128,56 @@ paths:
           description: Пользователь не найден
         "500":
           description: Внутренняя ошибка сервера
-      x-swagger-router-controller: Users
 components:
   schemas:
     user:
       required:
-      - email
-      - id
-      - name
+        - id
+        - username
+        - email
+        - firstName
+        - lastName
+        - city
+        - age
       type: object
       properties:
         id:
           type: integer
           format: int64
-        name:
+        username:
           type: string
         email:
           type: string
-      example:
-        name: name
-        id: 0
-        email: email
+        firstName:
+          type: string
+        lastName:
+          type: string
+        city:
+          type: string
+        age:
+          type: integer
     create_user:
       required:
-      - email
-      - name
+        - username
+        - email
+        - firstName
+        - lastName
+        - city
+        - age
       type: object
       properties:
-        name:
+        username:
           type: string
         email:
           type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        city:
+          type: string
+        age:
+          type: integer
   securitySchemes:
     api_key:
       type: apiKey
