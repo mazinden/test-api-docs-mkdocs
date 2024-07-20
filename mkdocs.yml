@@ -12,3 +12,8 @@ nav:
   - История изменений: changelog.md
   - Контакты: contacts.md
   - Глоссарий: glossary.md
+
+extra:
+  analytics:
+    provider: google
+    property: G-LB0BTTVLLG
