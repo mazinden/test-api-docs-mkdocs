@@ -1,7 +1,8 @@
 site_name: My Project Documentation
 site_description: A detailed description of my project
-theme: material
-custom_dir: 'overrides'
+theme:
+  name: material
+  custom_dir: 'overrides'
 
 nav:
   - Главная страница: index.md
