@@ -1,0 +1,185 @@
+openapi: 3.0.0
+info:
+  title: Пример API для работы с пользователями
+  description: "API для создания, получения, обновления и удаления пользователей."
+  termsOfService: https://example.com/terms
+  contact:
+    name: Имя контактного лица
+    email: contact@example.com
+  license:
+    name: Лицензия API
+    url: https://example.com/license
+  version: 0.0.1
+externalDocs:
+  description: Подробная документация по API
+  url: https://example.com/docs
+servers:
+  - url: http://localhost:8080
+    description: Основной сервер
+  - url: http://localhost:8080/test
+    description: Тестовый сервер
+security:
+  - api_key: []
+tags:
+  - name: users
+    description: Операции с пользователями
+paths:
+  /users:
+    get:
+      tags:
+        - users
+      summary: Получить список всех пользователей
+      operationId: usersGET
+      responses:
+        "200":
+          description: Список пользователей успешно получен
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/user'
+    post:
+      tags:
+        - users
+      summary: Создать нового пользователя
+      operationId: usersPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/create_user'
+      responses:
+        "201":
+          description: Пользователь успешно создан
+        "400":
+          description: Неверный запрос (неполные или некорректные данные)
+        "500":
+          description: Внутренняя ошибка сервера
+  /users/{id}:
+    get:
+      tags:
+        - users
+      summary: Получить информацию о пользователе по ID
+      operationId: usersIdGET
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Информация о пользователе успешно получена
+        "404":
+          description: Пользователь не найден
+        "500":
+          description: Внутренняя ошибка сервера
+    put:
+      tags:
+        - users
+      summary: Обновить данные пользователя
+      operationId: usersIdPUT
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/create_user'
+            example:
+              username: "UpdatedUser"
+              email: "updated@example.com"
+              firstName: "Обновленное"
+              lastName: "Имя"
+              city: "Обновленный Город"
+              age: 32
+      responses:
+        "200":
+          description: Данные пользователя успешно обновлены
+        "400":
+          description: Неверный запрос (неполные или некорректные данные)
+        "404":
+          description: Пользователь не найден
+        "409":
+          description: Конфликт при обновлении данных пользователя
+        "500":
+          description: Внутренняя ошибка сервера
+    delete:
+      tags:
+        - users
+      summary: Удалить пользователя
+      operationId: usersIdDELETE
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Пользователь успешно удален
+        "404":
+          description: Пользователь не найден
+        "500":
+          description: Внутренняя ошибка сервера
+components:
+  schemas:
+    user:
+      required:
+        - id
+        - username
+        - email
+        - firstName
+        - lastName
+        - city
+        - age
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        city:
+          type: string
+        age:
+          type: integer
+    create_user:
+      required:
+        - username
+        - email
+        - firstName
+        - lastName
+        - city
+        - age
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        city:
+          type: string
+        age:
+          type: integer
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: Authorization
+      in: header
